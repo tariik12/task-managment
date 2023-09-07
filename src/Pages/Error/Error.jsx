@@ -18,7 +18,7 @@ const Error = () => {
   </div>
   <div className="btn me-4 btn-sm border-none inner text-white "  style={{ background:`linear-gradient(to bottom, rgba(1, 123, 150, 1),rgba(30, 64, 71, 1)` }}> 
   <Link className=''
-            to='/'
+            to='/home'
           >
             <button >Go To Home Page</button>
           
