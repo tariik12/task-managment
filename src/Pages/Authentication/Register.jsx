@@ -7,13 +7,10 @@ import { toast } from 'react-toastify';
 
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { AuthContext } from '../../Provider/AuthProvider';
-import SocialLogin from '../../Components/SocialLogin';
 
 
 const Register = () => {
-    const [toggle1, setToggle1] = useState(false);
     const [toggle2, setToggle2] = useState(false);
-
     const { createUser, updateUserProfile } = useContext(AuthContext)
     const navigate = useNavigate()
     const {
@@ -23,31 +20,30 @@ const Register = () => {
         formState: { errors },
     } = useForm();
     const onSubmit = (data) => {
-        if(data.password === data.confirm){
-            /////////////////////////////-------------
-            createUser(data.email, data.password)
+        createUser(data.email, data.password)
+       
             .then(result => {
                 console.log(result.user)  
                 console.log(data.name, data.photoURL)
                 updateUserProfile(data.name, data.photoURL)
                 toast.success('SingIn Success')
+                saveUserToLocalStorage(data)
                 navigate('/home')
                 reset()
             })
             .catch(error => {
                 const errorMessage = error.message;
                 toast.error(`${errorMessage}`);
-            })
-            // ------------------------
-           
+            }) 
             
                     .catch(error => console.log(error.massage))
-            }
-        else{
-            return toast.error(' confirm password not Mass ')
-        }
+      
 
-        
+        const saveUserToLocalStorage = (userData) => {
+            const existingTasks = JSON.parse(localStorage.getItem('users')) || [];
+            existingTasks.push(userData);
+            localStorage.setItem('users', JSON.stringify(existingTasks));
+          };
 
 
     };
@@ -59,7 +55,7 @@ const Register = () => {
             <div className="hero-content flex-col">
                 <div className="card px-5  max-w-sm shadow-2xl bg-[#87787855]">
                     <h3 className='text-4xl pt-5 font-serif'>Create Account</h3>
-                    <SocialLogin/>
+                   
                     <form onSubmit={handleSubmit(onSubmit)} className="px-10 py-5">
                         <div className="">
                         
@@ -79,8 +75,8 @@ const Register = () => {
                         <div className="">
                            
                         {
-                           toggle2? <FaRegEye className='z-10 absolute text-4xl ms-[240px]' onClick={() => { setToggle2(!toggle2) }}/>:
-                            <FaRegEyeSlash className='z-10 absolute text-4xl ms-[240px] ' onClick={() => { setToggle2(!toggle2) }}/>
+                           toggle2? <FaRegEye className='z-10 absolute text-4xl ms-[180px]' onClick={() => { setToggle2(!toggle2) }}/>:
+                            <FaRegEyeSlash className='z-10 absolute text-4xl ms-[180px] ' onClick={() => { setToggle2(!toggle2) }}/>
                         }
                             <input {...register('password', {
                                 required: true,
@@ -94,14 +90,15 @@ const Register = () => {
                             {errors.password?.type === 'pattern' && <p className='text-red-700' >Password must be regular expression charector</p>}
                         </div>
                         <div className="">
-                           
-                            {
-                           toggle1? <FaRegEye className='z-10 absolute text-4xl ms-[240px]' onClick={() => { setToggle1(!toggle1) }}/>:
-                            <FaRegEyeSlash className='z-10 absolute text-4xl ms-[240px] ' onClick={() => { setToggle1(!toggle1) }}/>
-                        }
-                            <input {...register('confirm')} required={true}   type={toggle1 ? "text" : "password"} placeholder="confirm password" className="bg-transparent w-full border-b border-primary text-white::placeholder focus:outline-none placeholder-white  py-3" />
-                            
-                        </div>
+          <textarea
+            {...register('addBio')}
+            name="addBio"
+            className="bg-transparent w-full border-b border-primary text-white::placeholder focus:outline-none placeholder-white  py-3" 
+           
+            placeholder="Add Bio"
+            rows="2"
+          />
+        </div>
                         <div className="form-control mt-6">
                             <div className='text-white'>Already have an account<Link to='/' className='text-[#1589FF]'> Login</Link></div>
                             <input onSubmit={handleSubmit} type="submit" className='btn border-primary btn-sm mt-4'  value={'SingIN'} name="" id="" />

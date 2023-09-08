@@ -7,7 +7,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 const MainLayout = () => {
     const {user} = useContext(AuthContext);
     return (
-        <div className="bg-red-400" >
+        <div className="" >
             {
                 user&& <Navbar></Navbar>
             }

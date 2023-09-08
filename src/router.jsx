@@ -12,6 +12,8 @@ import Profile from "./Pages/Profile/Profile";
 import TaskForm from "./Pages/TaskForm/TaskForm";
 import CreateTeam from "./Components/CreateTeam";
 import Task from "./Components/Task";
+import LoadingProvider from "./Provider/LoadingProvider";
+import AssignTask from "./Components/AssignTask";
 
 
 export const router = createBrowserRouter([
@@ -38,15 +40,21 @@ export const router = createBrowserRouter([
             },
             {
               path:'task',
-              element:<Task/>
+              element:<LoadingProvider><Task/></LoadingProvider>
             },
+            {
+              path:'assign',
+              element:<AssignTask/>
+            },
+           
+            
           ]
           
         },
         
         {
           path:'/profile',
-          element:<Profile/>
+          element:<LoadingProvider><Profile/></LoadingProvider>
         },
         
         

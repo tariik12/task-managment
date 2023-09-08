@@ -3,30 +3,29 @@ import { useForm } from 'react-hook-form';
 
 
 import { useTaskContext } from '../../Provider/TaskProvider';
+import { useContext } from 'react';
+import { AuthContext } from '../../Provider/AuthProvider';
 const TaskForm = () => {
     const { createTask } = useTaskContext();
     const { register, handleSubmit, reset } = useForm();
+    const {user} = useContext(AuthContext)
+    console.log(user)
 
 
   const onSubmit = (data) => {
+    data.email = user.email
         console.log(data)
-    
-    // Save the task to local storage
     console.log(data)
     saveTaskToLocalStorage(data);
-    // Call the provided onCreateTask function to update the task list
     createTask(data);
     reset();
    
   };
 
-  // Function to save a task to local storage
+
   const saveTaskToLocalStorage = (task) => {
-    // Get existing tasks from local storage or initialize an empty array
     const existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    // Add the new task to the existing tasks
     existingTasks.push(task);
-    // Save the updated tasks back to local storage
     localStorage.setItem('tasks', JSON.stringify(existingTasks));
   };
 
